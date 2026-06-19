@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary:   #00E5FF;
+  --secondary: #7C4DFF;
+  --accent:    #00FF94;
+  --bg:        #050816;
+  --surface:   #0D1224;
+  --surface2:  #111827;
+  --muted:     #A0AEC0;
+  --mouse-x: 0;
+  --mouse-y: 0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+code, .mono, pre { font-family: 'JetBrains Mono', monospace; }
+
+.glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+}
+
+.glow-primary   { box-shadow: 0 0 20px rgba(0,229,255,0.3); }
+.glow-secondary { box-shadow: 0 0 20px rgba(124,77,255,0.3); }
+.text-glow      { text-shadow: 0 0 20px rgba(0,229,255,0.5); }
+.neon-border    { border: 1px solid rgba(0,229,255,0.4); box-shadow: 0 0 10px rgba(0,229,255,0.2), inset 0 0 10px rgba(0,229,255,0.05); }
+
+/* Parallax depth layers */
+.parallax-bg {
+  transform: translate(calc(var(--mouse-x) * -40px), calc(var(--mouse-y) * -40px));
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+.parallax-mid {
+  transform: translate(calc(var(--mouse-x) * -20px), calc(var(--mouse-y) * -20px));
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+.parallax-fg {
+  transform: translate(calc(var(--mouse-x) * -8px), calc(var(--mouse-y) * -8px));
+  transition: transform 0.06s ease-out;
+  will-change: transform;
+}
+
+/* Card tilt transition */
+.tilt-card {
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+@media (max-width: 767px) {
+  .parallax-bg, .parallax-mid, .parallax-fg { transform: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

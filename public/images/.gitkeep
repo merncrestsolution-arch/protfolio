@@ -1,0 +1,4 @@
+# Place portfolio images here:
+# - hero-avatar.png
+# - company-logo.png
+# - project-screenshots/ (referenced via the `image` field in src/data/projects.ts)
