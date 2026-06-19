@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Billboard, Text, Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -99,9 +99,10 @@ function LogoNode({ position, logo }: LogoNodeProps) {
 
 interface SphereProps {
   activeCategory: string;
+  dragRef: React.MutableRefObject<{ velocityX: number; velocityY: number }>;
 }
 
-function Sphere({ activeCategory }: SphereProps) {
+function Sphere({ activeCategory, dragRef }: SphereProps) {
   const sphereGroupRef = useRef<THREE.Group>(null);
 
   const filteredLogos = useMemo(() => {
@@ -116,10 +117,13 @@ function Sphere({ activeCategory }: SphereProps) {
   useFrame(() => {
     if (!sphereGroupRef.current) return;
     const { snx, sny } = useMouseStore.getState();
-    // snx controls rotation speed and direction
-    sphereGroupRef.current.rotation.y += 0.003 + snx * 0.008;
-    // sny controls vertical tilt
-    sphereGroupRef.current.rotation.x = sny * 0.3;
+    const { velocityX, velocityY } = dragRef.current;
+
+    sphereGroupRef.current.rotation.y += 0.003 + snx * 0.008 + velocityX;
+    sphereGroupRef.current.rotation.x = sny * 0.3 + velocityY;
+
+    dragRef.current.velocityX *= 0.92;
+    dragRef.current.velocityY *= 0.92;
   });
 
   return (
@@ -157,8 +161,35 @@ class ErrorBoundary extends React.Component<
 }
 
 export function TechLogoSphere({ activeCategory = 'all' }: TechLogoSphereProps) {
+  const dragRef = useRef({ velocityX: 0, velocityY: 0 });
+  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    lastPointerRef.current = { x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }, []);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!lastPointerRef.current) return;
+    const dx = e.clientX - lastPointerRef.current.x;
+    const dy = e.clientY - lastPointerRef.current.y;
+    lastPointerRef.current = { x: e.clientX, y: e.clientY };
+    dragRef.current.velocityX = dx * 0.002;
+    dragRef.current.velocityY = dy * 0.001;
+  }, []);
+
+  const handlePointerUp = useCallback(() => {
+    lastPointerRef.current = null;
+  }, []);
+
   return (
-    <div className="w-full h-full relative min-h-[400px]">
+    <div
+      className="w-full h-full relative min-h-[320px] touch-none"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+    >
       <ErrorBoundary fallback={<div className="w-full h-full flex items-center justify-center text-muted font-mono">3D Sphere Failed to Load</div>}>
         <Canvas
           camera={{ position: [0, 0, 8], fov: 50 }}
@@ -168,7 +199,7 @@ export function TechLogoSphere({ activeCategory = 'all' }: TechLogoSphereProps) 
           <ambientLight intensity={0.8} />
           <pointLight position={[10, 10, 10]} intensity={1.5} />
           <pointLight position={[-10, -10, -10]} color="#7C4DFF" intensity={0.8} />
-          <Sphere activeCategory={activeCategory} />
+          <Sphere activeCategory={activeCategory} dragRef={dragRef} />
         </Canvas>
       </ErrorBoundary>
     </div>

@@ -193,10 +193,10 @@ export function SkillsSection() {
               </div>
             </motion.div>
 
-            {/* Right Column: 3D Fibonacci Sphere (Hidden on mobile) */}
+            {/* Right Column: 3D Fibonacci Sphere */}
             <motion.div
               variants={fadeInUp}
-              className="h-[600px] md:h-[700px] hidden lg:block sticky top-24"
+              className="h-[420px] sm:h-[500px] md:h-[600px] lg:h-[700px] lg:sticky lg:top-24"
             >
               <div className="glass p-6 rounded-2xl h-full flex flex-col">
                 <div className="flex items-center justify-between mb-4">
@@ -211,7 +211,7 @@ export function SkillsSection() {
                   <TechLogoSphere activeCategory={activeCategory} />
                 </div>
                 <p className="text-xs text-muted text-center mt-4">
-                  Sphere spins dynamically relative to horizontal mouse speed
+                  Sphere spins dynamically — drag on touch or move your mouse
                 </p>
               </div>
             </motion.div>
