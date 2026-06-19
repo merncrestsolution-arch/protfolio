@@ -15,7 +15,7 @@ export const techLogos: TechLogo[] = [
   { name: 'JavaScript',  symbol: 'JS',  color: '#000000', bg: '#F7DF1E', category: 'frontend', iconUrl: 'https://cdn.simpleicons.org/javascript' },
   { name: 'Tailwind',    symbol: 'Tw',  color: '#FFFFFF', bg: '#38B2AC', category: 'frontend', iconUrl: 'https://cdn.simpleicons.org/tailwindcss' },
   { name: 'HTML5',       symbol: 'H5',  color: '#FFFFFF', bg: '#E34F26', category: 'frontend', iconUrl: 'https://cdn.simpleicons.org/html5' },
-  { name: 'CSS3',        symbol: 'C3',  color: '#FFFFFF', bg: '#1572B6', category: 'frontend', iconUrl: 'https://cdn.simpleicons.org/css3' },
+  { name: 'CSS3',        symbol: 'C3',  color: '#FFFFFF', bg: '#1572B6', category: 'frontend', iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/62/CSS3_logo.svg' },
   // Backend
   { name: 'Node.js',     symbol: 'No',  color: '#FFFFFF', bg: '#339933', category: 'backend',  iconUrl: 'https://cdn.simpleicons.org/nodedotjs' },
   { name: 'Express',     symbol: 'Ex',  color: '#FFFFFF', bg: '#404040', category: 'backend',  iconUrl: 'https://cdn.simpleicons.org/express/white' },
