@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Text, Line, Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -145,14 +145,20 @@ function ConnectionLine({ start, end }: { start: [number, number, number]; end: 
   );
 }
 
-function Diagram({ onHover }: { onHover: (desc: string | null) => void }) {
+function Diagram({
+  onHover,
+  dragOffsetRef,
+}: {
+  onHover: (desc: string | null) => void;
+  dragOffsetRef: React.MutableRefObject<number>;
+}) {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
     const { snx } = useMouseStore.getState();
     // Entire diagram slowly rotates. Mouse-X accelerates/reverses rotation.
-    groupRef.current.rotation.y = clock.elapsedTime * 0.08 + snx * 0.3;
+    groupRef.current.rotation.y = clock.elapsedTime * 0.08 + snx * 0.3 + dragOffsetRef.current;
   });
 
   return (
@@ -190,10 +196,34 @@ class ErrorBoundary extends React.Component<
 
 export function AWSDiagram() {
   const [tooltip, setTooltip] = useState<string | null>(null);
+  const dragOffsetRef = useRef(0);
+  const lastPointerRef = useRef<{ x: number } | null>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    lastPointerRef.current = { x: e.clientX };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }, []);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!lastPointerRef.current) return;
+    const dx = e.clientX - lastPointerRef.current.x;
+    lastPointerRef.current = { x: e.clientX };
+    dragOffsetRef.current += dx * 0.01;
+  }, []);
+
+  const handlePointerUp = useCallback(() => {
+    lastPointerRef.current = null;
+  }, []);
+
   return (
-    <div className="w-full h-full relative min-h-[450px]">
+    <div
+      className="w-full h-full relative min-h-[320px] touch-none"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+    >
       {/* Floating HTML Tooltip */}
       {tooltip && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-surface/90 border border-primary/30 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-mono text-primary shadow-glow-primary z-10 transition-opacity duration-300">
@@ -210,7 +240,7 @@ export function AWSDiagram() {
           <ambientLight intensity={0.7} />
           <pointLight position={[10, 10, 10]} intensity={1.5} />
           <pointLight position={[-10, -10, -10]} color="#7C4DFF" intensity={0.8} />
-          <Diagram onHover={setTooltip} />
+          <Diagram onHover={setTooltip} dragOffsetRef={dragOffsetRef} />
         </Canvas>
       </ErrorBoundary>
     </div>

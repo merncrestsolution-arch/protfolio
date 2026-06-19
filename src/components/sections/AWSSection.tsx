@@ -69,10 +69,10 @@ export function AWSSection() {
 
           {/* Main Layout Content */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* 3D Diagram (Left Column, hidden on mobile/tablet) */}
+            {/* 3D Diagram */}
             <motion.div
               variants={fadeInLeft}
-              className="h-[500px] md:h-[600px] hidden lg:block"
+              className="h-[380px] sm:h-[450px] md:h-[550px] lg:h-[600px]"
             >
               <div className="glass p-6 rounded-2xl h-full flex flex-col justify-between">
                 <div className="flex items-center justify-between border-b border-white/5 pb-4">
@@ -83,7 +83,7 @@ export function AWSSection() {
                   <AWSDiagram />
                 </div>
                 <p className="text-xs text-muted text-center pt-2">
-                  Hover nodes to inspect roles • Scroll/drag to rotate layout
+                  Tap nodes to inspect roles • Drag to rotate layout
                 </p>
               </div>
             </motion.div>
