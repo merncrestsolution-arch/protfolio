@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { ImagePlaceholder } from '../ui/ImagePlaceholder';
 import { NeonButton } from '../ui/NeonButton';
 import { staggerContainer, fadeInLeft, fadeInRight, fadeInUp } from '../../animations/variants';
 import { CheckCircle } from 'lucide-react';

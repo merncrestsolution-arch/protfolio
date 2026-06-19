@@ -1,6 +1,6 @@
 import React, { useRef, Suspense, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Stars, Billboard, Text, useTexture, Html } from '@react-three/drei';
+import { Stars, Billboard, Text, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useMouseStore } from '../../store/mouseStore';
 import { techLogos } from '../../data/techLogos';

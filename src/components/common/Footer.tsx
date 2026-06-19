@@ -1,12 +1,7 @@
-import { Github, Linkedin, MessageCircle, ArrowUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Github, Linkedin, MessageCircle } from 'lucide-react';
 import { CONTACT_INFO } from '../../utils/constants';
 
 export function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <footer className="relative bg-surface border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
